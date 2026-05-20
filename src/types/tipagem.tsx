@@ -1,3 +1,5 @@
+import type { PaletteMode } from "@mui/material";
+
 export interface Localizacao {
   ip: string;
   city: string;
@@ -62,4 +64,11 @@ export interface WeatherContextType extends estadoClima {
   searchLocation: (query: string) => Promise<void>;
   toggleTheme: () => void;
   clearWeather: () => void;
+}
+
+export type Mode = PaletteMode;
+
+export interface ColorModeContextType {
+  toggleColorMode: () => void;
+  setColorMode: (m: Mode) => void;
 }

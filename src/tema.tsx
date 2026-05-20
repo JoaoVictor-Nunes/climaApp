@@ -1,9 +1,7 @@
 import { useState, useMemo, createContext } from "react";
 import { createTheme } from "@mui/material/styles";
 import type { Theme, ThemeOptions } from "@mui/material/styles";
-import type { PaletteMode } from "@mui/material";
-
-export type Mode = PaletteMode;
+import type { Mode, ColorModeContextType } from "./types/tipagem";
 
 export const tokens = (mode: Mode) => ({
   ...(mode === "dark"
@@ -198,19 +196,12 @@ export const themeSettings = (mode: Mode): ThemeOptions => {
 
 // --- INTERFACES PARA O CONTEXTO ---
 
-export interface ColorModeContextType {
-  toggleColorMode: () => void;
-  setColorMode: (m: Mode) => void;
-}
-
-// CONTEXTO
 export const ColorModeContext = createContext<ColorModeContextType>({
   toggleColorMode: () => {},
   setColorMode: () => {},
 });
 
 export const useMode = (): [Theme, ColorModeContextType] => {
-  // Gerencia o estado do tema localmente
   const [mode, setMode] = useState<Mode>("dark");
 
   const colorMode = useMemo<ColorModeContextType>(

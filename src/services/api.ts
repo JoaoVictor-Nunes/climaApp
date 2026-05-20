@@ -1,5 +1,5 @@
 import axios from 'axios';
-import type { Localizacao, resultadosCidades, Temperatura, Cidade } from '../types/clima';
+import type { Localizacao, resultadosCidades, Temperatura, Cidade } from '../types/tipagem';
 
 export const getIpLocation = async (): Promise<Localizacao> => {
   const response = await axios.get<Localizacao>('https://ipapi.co/json/');
