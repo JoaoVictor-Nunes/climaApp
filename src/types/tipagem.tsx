@@ -1,6 +1,4 @@
-import type { PaletteMode } from "@mui/material";
-
-export interface Localizacao {
+export interface GeolocationResponse {
   ip: string;
   city: string;
   region: string;
@@ -9,7 +7,7 @@ export interface Localizacao {
   longitude: number;
 }
 
-export interface Cidade {
+export interface City {
   id: number;
   name: string;
   latitude: number;
@@ -18,11 +16,11 @@ export interface Cidade {
   admin1?: string;
 }
 
-export interface resultadosCidades {
-  results?: Cidade[];
+export interface GeocodingResponse {
+  results?: City[];
 }
 
-export interface climaAtual{
+export interface CurrentWeather {
   temperature: number;
   windspeed: number;
   weathercode: number;
@@ -30,10 +28,10 @@ export interface climaAtual{
   humidity?: number;
 }
 
-export interface Temperatura {
+export interface WeatherForecastResponse {
   latitude: number;
   longitude: number;
-  current_weather: climaAtual;
+  current_weather: CurrentWeather;
   hourly: {
     time: string[];
     relativehumidity_2m: number[];
@@ -52,23 +50,16 @@ export interface ChartData {
   max: number;
 }
 
-export interface estadoClima {
-  city: Cidade | null;
-  weatherData: Temperatura | null;
+export interface WeatherState {
+  city: City | null;
+  weatherData: WeatherForecastResponse | null;
   isLoading: boolean;
   error: string | null;
   isDarkMode: boolean;
 }
 
-export interface WeatherContextType extends estadoClima {
+export interface WeatherContextType extends WeatherState {
   searchLocation: (query: string) => Promise<void>;
   toggleTheme: () => void;
   clearWeather: () => void;
-}
-
-export type Mode = PaletteMode;
-
-export interface ColorModeContextType {
-  toggleColorMode: () => void;
-  setColorMode: (m: Mode) => void;
 }
