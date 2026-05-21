@@ -1,18 +1,32 @@
 import { Box, TextField } from "@mui/material";
-import {useState, type FormEvent} from "react";
+import {useEffect, useState, type FormEvent} from "react";
 import { tokens } from "../tema";
 import { useTheme } from "@mui/material/styles";
+import { useWeather } from '../Context/climaContext';
 
 export const SearchBar = () => {
 
     const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
+    const colors = tokens(theme.palette.mode);
     const [searchCity, setSearchCity] = useState('');
+    const { searchLocation, clearWeather } = useWeather();
 
+    useEffect(() => {
+      const timer = setTimeout(() => {
+        if (searchCity.trim().length > 0) {
+          searchLocation(searchCity);
+        } else if (searchCity.trim().length == 0) {
+          clearWeather
+        }
+      }, 800);
+          return () => {
+      clearTimeout(timer);
+    };
+    })
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
         if (searchCity.trim().length > 0) {
-            console.log("cidade pesquisada: ", searchCity);
+            searchLocation(searchCity);
         }
     }
     return (
@@ -26,6 +40,7 @@ export const SearchBar = () => {
             <TextField id="barraPesquisa" 
             fullWidth
             value={searchCity}
+            onChange={(e) => setSearchCity(e.target.value)}
             label="Pesquisar cidades..."
             variant="outlined"
         sx={{
@@ -52,7 +67,6 @@ export const SearchBar = () => {
             color: colors.grey[100],
           },
         }}
-            onChange={(e) => setSearchCity(e.target.value)}
             />
         </Box>
     )
