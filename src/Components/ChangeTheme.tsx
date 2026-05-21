@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { IconButton, useTheme } from "@mui/material";
 import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
 import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
-import { ColorModeContext, tokens } from "../tema"; // Ajuste o caminho se necessário
+import { ColorModeContext, tokens } from "../tema";
 
 export const ChangeTheme = () => {
   const theme = useTheme();

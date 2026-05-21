@@ -29,7 +29,6 @@ export const WeatherProvider = ({ children }: { children: ReactNode }) => {  con
     });
   }, []);
 
-  // Ensure theme class matches on mount
   useEffect(() => {
     if (isDarkMode) {
       document.documentElement.classList.add('dark');
@@ -44,7 +43,6 @@ export const WeatherProvider = ({ children }: { children: ReactNode }) => {  con
     try {
       const data = await getWeather(lat, lon);
 
-      // Encontrar umidade atual batendo os horários
       const currentTime = data.current_weather.time;
       const currentHourIndex = data.hourly.time.findIndex((t: string) => t.startsWith(currentTime.substring(0, 13)));
       const humidity = currentHourIndex !== -1 ? data.hourly.relativehumidity_2m[currentHourIndex] : undefined;
