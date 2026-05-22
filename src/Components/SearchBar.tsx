@@ -1,20 +1,14 @@
-import { Box, TextField } from "@mui/material";
-import { useEffect, useState, type FormEvent } from "react";
+import { Box, InputAdornment, TextField, IconButton, useTheme } from "@mui/material";
+import { useEffect, useState, type SyntheticEvent } from "react";
 import { tokens } from "../tema";
-import { useTheme } from "@mui/material/styles";
 import { useWeather } from '../Context/climaContext';
+import SearchIcon from '@mui/icons-material/Search';
 
 export const SearchBar = () => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
     const [searchCity, setSearchCity] = useState('');
-    const { searchLocation, clearWeather, weatherData } = useWeather();
-
-    useEffect(() => {
-        if (weatherData && weatherData.current_weather) {
-            console.log(`Temperatura atual em ${searchCity}: ${weatherData.current_weather.temperature}°C`);
-        }
-    }, [weatherData]);
+    const { searchLocation, clearWeather } = useWeather();
 
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -30,8 +24,8 @@ export const SearchBar = () => {
         };
     }, [searchCity, searchLocation, clearWeather]); 
 
-    const handleSubmit = (e: FormEvent) => {
-        e.preventDefault();
+    const handleSubmit = (e?: SyntheticEvent) => {
+        if (e) e.preventDefault();
         if (searchCity.trim().length > 0) {
             searchLocation(searchCity);
         }
@@ -41,7 +35,7 @@ export const SearchBar = () => {
         <Box
             component="form"
             onSubmit={handleSubmit}
-            sx={{ '& > :not(style)': { m: 1, width: '25ch' } }}
+            sx={{ width: '100%', maxWidth: 500, margin: '0 auto', p: 1 }}
             noValidate
             autoComplete="off"
         >
@@ -52,10 +46,28 @@ export const SearchBar = () => {
                 onChange={(e) => setSearchCity(e.target.value)}
                 label="Pesquisar cidades..."
                 variant="outlined"
+                slotProps={{
+                    input: {
+                        endAdornment: (
+                            <InputAdornment position="end">
+                                <IconButton 
+                                    onClick={handleSubmit} 
+                                    edge="end" 
+                                    sx={{ color: colors.grey[100], paddingRight: 2}}
+                                    aria-label="buscar cidade"
+                                >
+                                    <SearchIcon />
+                                </IconButton>
+                            </InputAdornment>
+                        )
+                    }
+                }}  
                 sx={{
                     width: "100%",
                     '& .MuiOutlinedInput-root': {
-                        backgroundColor: colors.primary[500],
+                        
+                        borderRadius: 2,
+                        paddingRight: 1,
                         '& fieldset': {
                             borderColor: colors.grey[300],
                         },
