@@ -1,7 +1,7 @@
 import { ColorModeContext, useMode, tokens } from './tema';
 import './App.css';
-// Adicionado 'Grow' nas importações do MUI
-import { CssBaseline, ThemeProvider, Box, Typography, Container, Paper, Grow } from '@mui/material';
+// Adicionado 'Alert' nas importações do MUI
+import { CssBaseline, ThemeProvider, Box, Typography, Container, Paper, Grow, Alert } from '@mui/material';
 import { SearchBar } from './Components/SearchBar';
 import { ChangeTheme } from './Components/ChangeTheme';
 import { GraficoClima } from './Components/GraficoClima';
@@ -10,12 +10,34 @@ import { ClimaAtual } from './Components/ClimaAtual';
 import CloudIcon from '@mui/icons-material/Cloud'; 
 
 const WeatherResults = () => {
-  const { weatherData } = useWeather();
+  const { weatherData, error } = useWeather();
   
+  if (error) {
+    return (
+      <Grow in={true} timeout={500}>
+        <Alert 
+          severity="error" 
+          variant="filled" 
+          sx={{ 
+            width: '100%', 
+            py: 2, 
+            px: 3,
+            fontSize: '1.1rem',
+            borderRadius: 2,
+            display: 'flex',
+            alignItems: 'center',
+            boxShadow: '0 4px 12px rgba(0,0,0,0.1)' 
+          }}
+        >
+          {error}
+        </Alert>
+      </Grow>
+    );
+  }
+
   const showResults = !!weatherData;
 
   return (
-
     <Grow in={showResults} timeout={1000} unmountOnExit>
       <Box 
         sx={{ 
@@ -80,7 +102,7 @@ function App() {
                   }}
                 >
                   <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                    <CloudIcon sx={{ fontSize: 36 }} />
+                    <CloudIcon sx={{ fontSize: 36 }}/>
                     <Typography 
                       variant="h4" 
                       sx={{ letterSpacing: '-0.05em', fontWeight: 900 }}

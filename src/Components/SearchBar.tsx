@@ -1,5 +1,6 @@
 import { Box, InputAdornment, TextField, IconButton, useTheme } from "@mui/material";
-import { useEffect, useState, type SyntheticEvent } from "react";
+// Importamos o useRef aqui
+import { useEffect, useState, type SyntheticEvent } from "react"; 
 import { tokens } from "../tema";
 import { useWeather } from '../Context/climaContext';
 import SearchIcon from '@mui/icons-material/Search';
@@ -9,9 +10,15 @@ export const SearchBar = () => {
     const colors = tokens(theme.palette.mode);
     const [searchCity, setSearchCity] = useState('');
     
+    const [hasTouched, setHasTouched] = useState(false);
+    
     const { searchLocation, clearWeather, error, setError } = useWeather(); 
 
     useEffect(() => {
+        // 2. Se o usuário NUNCA tocou na barra, abortamos qualquer ação automática!
+        // Isso protege o erro inicial do IP de ser apagado.
+        if (!hasTouched) return;
+
         const timer = setTimeout(() => {
             if (searchCity.trim().length > 0) {
                 searchLocation(searchCity);
@@ -19,7 +26,7 @@ export const SearchBar = () => {
                 clearWeather();
                 if (setError) setError(null);
             }
-        }, 800);
+        }, 0);
 
         return () => clearTimeout(timer);
     }, [searchCity, searchLocation, clearWeather, setError]); 
@@ -52,9 +59,6 @@ export const SearchBar = () => {
                 label="Pesquisar cidade..."
                 variant="outlined"
                 
-                error={!!error} 
-                helperText={error || " "} 
-                
                 slotProps={{
                     input: {
                         endAdornment: (
@@ -62,7 +66,7 @@ export const SearchBar = () => {
                                 <IconButton 
                                     onClick={handleSubmit} 
                                     edge="end" 
-                                    sx={{ color: error ? colors.redAccent[500] : colors.grey[100] }}
+                                    sx={{ color: colors.grey[100] }}
                                 >
                                     <SearchIcon />
                                 </IconButton>
@@ -93,12 +97,6 @@ export const SearchBar = () => {
                     },
                     '& .MuiOutlinedInput-input': {
                         color: colors.grey[100],
-                    },
-                    '& .MuiFormHelperText-root': {
-                        fontSize: '0.875rem', 
-                        fontWeight: 500,      
-                        marginTop: '6px',     
-                        marginLeft: '4px',   
                     },
                 }}
             />
