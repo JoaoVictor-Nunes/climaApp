@@ -1,5 +1,4 @@
 import { Box, InputAdornment, TextField, IconButton, useTheme } from "@mui/material";
-// Importamos o useRef aqui
 import { useEffect, useState, type SyntheticEvent } from "react"; 
 import { tokens } from "../tema";
 import { useWeather } from '../Context/climaContext';
@@ -15,8 +14,6 @@ export const SearchBar = () => {
     const { searchLocation, clearWeather, error, setError } = useWeather(); 
 
     useEffect(() => {
-        // 2. Se o usuário NUNCA tocou na barra, abortamos qualquer ação automática!
-        // Isso protege o erro inicial do IP de ser apagado.
         if (!hasTouched) return;
 
         const timer = setTimeout(() => {
