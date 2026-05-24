@@ -1,11 +1,36 @@
-import { ColorModeContext, useMode, tokens } from './tema'; // Importado 'tokens' para usarmos as cores do tema
+import { ColorModeContext, useMode, tokens } from './tema';
 import './App.css';
-import { CssBaseline, ThemeProvider, Box, Typography, Container, Paper } from '@mui/material';
+// Adicionado 'Grow' nas importações do MUI
+import { CssBaseline, ThemeProvider, Box, Typography, Container, Paper, Grow } from '@mui/material';
 import { SearchBar } from './Components/SearchBar';
 import { ChangeTheme } from './Components/ChangeTheme';
-import { WeatherProvider } from './Context/climaContext';
+import { GraficoClima } from './Components/GraficoClima';
+import { WeatherProvider, useWeather } from './Context/climaContext';
 import { ClimaAtual } from './Components/ClimaAtual';
 import CloudIcon from '@mui/icons-material/Cloud'; 
+
+const WeatherResults = () => {
+  const { weatherData } = useWeather();
+  
+  const showResults = !!weatherData;
+
+  return (
+
+    <Grow in={showResults} timeout={1000} unmountOnExit>
+      <Box 
+        sx={{ 
+          display: 'grid',
+          gridTemplateColumns: { xs: '1fr', md: '350px 1fr' }, 
+          gap: 4,
+          alignItems: 'start'
+        }}
+      >
+        <ClimaAtual />
+        <GraficoClima />
+      </Box>
+    </Grow>
+  );
+};
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -22,18 +47,18 @@ function App() {
               minHeight: '100vh', 
               display: 'flex', 
               flexDirection: 'column',
-              justifyContent: 'center', 
-              alignItems: 'center',
-              py: { xs: 2, sm: 4 },
+              pt: { xs: 4, sm: 6 },
+              pb: 8,
+              bgcolor: 'background.default',
               transition: 'background-color 0.3s ease'
             }}
           >
-            <Container maxWidth="sm">
+            <Container maxWidth="lg">
               
               <Paper
                 elevation={3} 
                 sx={{
-                  p: { xs: 3, sm: 4 },
+                  p: { xs: 3, sm: 4, md: 5 },
                   borderRadius: 4, 
                   border: '1px solid',
                   borderColor: theme.palette.mode === 'dark' ? colors.primary[400] : colors.grey[200],
@@ -51,13 +76,13 @@ function App() {
                     display: 'flex', 
                     justifyContent: 'space-between', 
                     alignItems: 'center',
-                    mb: 4 
+                    mb: 5
                   }}
                 >
-                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                    <CloudIcon sx={{ fontSize: 32 }} />
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                    <CloudIcon sx={{ fontSize: 36 }} />
                     <Typography 
-                      variant="h5" 
+                      variant="h4" 
                       sx={{ letterSpacing: '-0.05em', fontWeight: 900 }}
                     >
                       Previsão do Clima
@@ -66,16 +91,14 @@ function App() {
                   <ChangeTheme />
                 </Box>
 
-                <Box 
-                  component="main" 
-                  sx={{ 
-                    display: 'flex', 
-                    flexDirection: 'column', 
-                    gap: 3 
-                  }}
-                >
-                  <SearchBar />
-                  <ClimaAtual />
+                <Box component="main">
+                  
+                  <Box sx={{ mb: 4 }}>
+                    <SearchBar />
+                  </Box>
+
+                  <WeatherResults />
+
                 </Box>
 
               </Paper>
