@@ -60,6 +60,7 @@ export interface WeatherState {
 
 export interface WeatherContextType extends WeatherState {
   searchLocation: (query: string) => Promise<void>;
+  setError: React.Dispatch<React.SetStateAction<string | null>>;
   toggleTheme: () => void;
   clearWeather: () => void;
 }

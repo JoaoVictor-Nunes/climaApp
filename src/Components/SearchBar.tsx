@@ -8,7 +8,8 @@ export const SearchBar = () => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
     const [searchCity, setSearchCity] = useState('');
-    const { searchLocation, clearWeather } = useWeather();
+    
+    const { searchLocation, clearWeather, error, setError } = useWeather(); 
 
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -16,13 +17,12 @@ export const SearchBar = () => {
                 searchLocation(searchCity);
             } else if (searchCity.trim().length === 0) {
                 clearWeather();
+                if (setError) setError(null);
             }
         }, 800);
 
-        return () => {
-            clearTimeout(timer);
-        };
-    }, [searchCity, searchLocation, clearWeather]); 
+        return () => clearTimeout(timer);
+    }, [searchCity, searchLocation, clearWeather, setError]); 
 
     const handleSubmit = (e?: SyntheticEvent) => {
         if (e) e.preventDefault();
@@ -31,11 +31,16 @@ export const SearchBar = () => {
         }
     };
 
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setSearchCity(e.target.value);
+        if (error && setError) setError(null); 
+    };
+
     return (
         <Box
             component="form"
             onSubmit={handleSubmit}
-            sx={{ width: '100%', maxWidth: 500, margin: '0 auto', p: 1 }}
+            sx={{ width: '100%', maxWidth: 500, margin: '0 auto' }}
             noValidate
             autoComplete="off"
         >
@@ -43,9 +48,13 @@ export const SearchBar = () => {
                 id="barraPesquisa" 
                 fullWidth
                 value={searchCity}
-                onChange={(e) => setSearchCity(e.target.value)}
-                label="Pesquisar cidades..."
+                onChange={handleChange}
+                label="Pesquisar cidade..."
                 variant="outlined"
+                
+                error={!!error} 
+                helperText={error || " "} 
+                
                 slotProps={{
                     input: {
                         endAdornment: (
@@ -53,8 +62,7 @@ export const SearchBar = () => {
                                 <IconButton 
                                     onClick={handleSubmit} 
                                     edge="end" 
-                                    sx={{ color: colors.grey[100], paddingRight: 2}}
-                                    aria-label="buscar cidade"
+                                    sx={{ color: error ? colors.redAccent[500] : colors.grey[100] }}
                                 >
                                     <SearchIcon />
                                 </IconButton>
@@ -65,8 +73,7 @@ export const SearchBar = () => {
                 sx={{
                     width: "100%",
                     '& .MuiOutlinedInput-root': {
-                        
-                        borderRadius: 2,
+                        borderRadius: 2, 
                         paddingRight: 1,
                         '& fieldset': {
                             borderColor: colors.grey[300],
@@ -86,6 +93,12 @@ export const SearchBar = () => {
                     },
                     '& .MuiOutlinedInput-input': {
                         color: colors.grey[100],
+                    },
+                    '& .MuiFormHelperText-root': {
+                        fontSize: '0.875rem', 
+                        fontWeight: 500,      
+                        marginTop: '6px',     
+                        marginLeft: '4px',   
                     },
                 }}
             />

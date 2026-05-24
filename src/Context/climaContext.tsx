@@ -108,6 +108,7 @@ export const WeatherProvider = ({ children }: { children: ReactNode }) => {  con
         weatherData,
         isLoading,
         error,
+        setError,
         isDarkMode,
         searchLocation: handleSearchLocation,
         toggleTheme,

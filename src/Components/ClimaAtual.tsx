@@ -1,7 +1,6 @@
 import { Box, Typography, Paper, CircularProgress, Alert, useTheme } from '@mui/material';
 import { useWeather } from '../Context/climaContext';
 
-// Importando os ícones do pacote Material UI
 import WbSunnyIcon from '@mui/icons-material/WbSunny';
 import CloudIcon from '@mui/icons-material/Cloud';
 import FoggyIcon from '@mui/icons-material/Foggy';
@@ -122,14 +121,12 @@ export const ClimaAtual = () => {
             {current_weather.humidity !== undefined && (
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                 <OpacityIcon sx={{ color: '#3b82f6', fontSize: 24 }} />
-                {/* CORREÇÃO: fontWeight movido para o sx */}
                 <Typography sx={{ fontWeight: 500 }}>{current_weather.humidity}%</Typography>
               </Box>
             )}
             
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
               <AirIcon sx={{ color: theme.palette.mode === 'dark' ? '#9ca3af' : '#6b7280', fontSize: 24 }} />
-              {/* CORREÇÃO: fontWeight movido para o sx */}
               <Typography sx={{ fontWeight: 500 }}>{current_weather.windspeed} km/h</Typography>
             </Box>
           </Box>
