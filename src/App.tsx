@@ -16,16 +16,17 @@ const WeatherResults = () => {
       <Grow in={true} timeout={500}>
         <Alert
           severity="error"
-          variant="filled"
           sx={{
             width: '100%',
             py: 2,
             px: 3,
             fontSize: '1.1rem',
             borderRadius: 2,
-            display: 'flex',
-            alignItems: 'center',
-            boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
+            boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+            '& .MuiAlert-message': {
+              width: '100%',
+              textAlign: 'center',
+            },
           }}
         >
           {error}

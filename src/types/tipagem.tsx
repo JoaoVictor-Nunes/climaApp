@@ -64,3 +64,10 @@ export interface WeatherContextType extends WeatherState {
   toggleTheme: () => void;
   clearWeather: () => void;
 }
+
+export type Mode = "light" | "dark";
+
+export interface ColorModeContextType {
+  toggleColorMode: () => void;
+  setColorMode: (mode: Mode) => void;
+}
