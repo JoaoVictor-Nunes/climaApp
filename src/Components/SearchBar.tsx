@@ -23,7 +23,7 @@ export const SearchBar = () => {
                 clearWeather();
                 if (setError) setError(null);
             }
-        }, 0);
+        }, 800);
 
         return () => clearTimeout(timer);
     }, [searchCity, searchLocation, clearWeather, setError]); 
@@ -37,6 +37,7 @@ export const SearchBar = () => {
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSearchCity(e.target.value);
+        setHasTouched(true);
         if (error && setError) setError(null); 
     };
 
